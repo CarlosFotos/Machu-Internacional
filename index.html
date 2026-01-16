@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carlos Machuca (Machu) - Productor Visual | Fotografía y Filmmaking de Eventos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
@@ -14,6 +14,7 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y; /* Permite scroll vertical */
         }
         
         :root {
@@ -23,40 +24,27 @@
             --light: #f1f1f1;
             --dark: #0f1123;
             --transition: all 0.3s ease;
-            --safe-area-inset-top: env(safe-area-inset-top);
-            --safe-area-inset-bottom: env(safe-area-inset-bottom);
         }
         
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
+        html, body {
             width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
         }
         
         body {
             background-color: var(--light);
             color: var(--dark);
             line-height: 1.6;
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100vw;
-            position: relative;
-            padding-top: var(--safe-area-inset-top);
-            padding-bottom: var(--safe-area-inset-bottom);
-        }
-        
-        /* Contenedor principal para prevenir desbordamiento */
-        .page-wrapper {
-            width: 100%;
-            max-width: 100vw;
-            overflow-x: hidden;
-            position: relative;
+            overflow-y: auto; /* Permite scroll vertical */
+            -webkit-text-size-adjust: 100%; /* Previene zoom automático en iOS */
         }
         
         section {
             padding: 60px 5%;
             width: 100%;
-            overflow: hidden;
         }
         
         @media (min-width: 768px) {
@@ -81,8 +69,6 @@
         h1, h2, h3, h4 {
             margin-bottom: 20px;
             color: var(--primary);
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
         
         h1 {
@@ -136,7 +122,6 @@
             margin-bottom: 20px;
             font-size: 1rem;
             line-height: 1.6;
-            word-wrap: break-word;
         }
         
         @media (min-width: 768px) {
@@ -161,6 +146,7 @@
             width: 100%;
             max-width: 300px;
             margin: 10px auto;
+            -webkit-appearance: none;
         }
         
         @media (min-width: 768px) {
@@ -196,9 +182,10 @@
             color: #E1306C;
         }
         
-        /* Hero Section - Optimizada para móvil */
+        /* Hero Section */
         .hero {
             min-height: 100vh;
+            min-height: -webkit-fill-available; /* Fix para iOS */
             background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.8)), url('images/1.jpg') center/cover no-repeat;
             display: flex;
             align-items: center;
@@ -207,7 +194,6 @@
             position: relative;
             padding: 20px 5%;
             width: 100%;
-            overflow: hidden;
         }
         
         .hero-content {
@@ -338,13 +324,14 @@
             height: auto;
         }
         
-        /* Galería con Swiper optimizada para móvil */
+        /* Galería con Swiper */
         .swiper-container {
             width: 100%;
             height: 300px;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            touch-action: pan-y pinch-zoom; /* Permite scroll en el swiper */
         }
         
         @media (min-width: 768px) {
@@ -423,13 +410,6 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
-        @media (min-width: 768px) {
-            .roi-item:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            }
-        }
-        
         .roi-item i {
             font-size: 2.5rem;
             color: var(--accent);
@@ -453,8 +433,6 @@
             border-radius: 12px;
             max-width: 95%;
             box-shadow: 0 10px 25px rgba(233, 69, 96, 0.2);
-            position: relative;
-            overflow: hidden;
             width: 100%;
         }
         
@@ -541,13 +519,6 @@
         .experience-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        @media (min-width: 768px) {
-            .experience-item:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            }
         }
         
         .experience-item i {
@@ -724,13 +695,6 @@
         .reel-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        @media (min-width: 768px) {
-            .reel-card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            }
         }
         
         .reel-info {
@@ -991,57 +955,7 @@
             }
         }
         
-        /* Scroll suave y mejoras de rendimiento */
-        * {
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        /* Fix para iOS */
-        @supports (-webkit-touch-callout: none) {
-            .hero {
-                min-height: -webkit-fill-available;
-            }
-        }
-        
-        /* Loading placeholder para imágenes */
-        .swiper-slide img {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        /* Contador de imágenes */
-        #contador-imagenes {
-            text-align: center;
-            margin-top: 10px;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.85rem;
-        }
-        
-        /* Mejoras de accesibilidad */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-        
-        /* Botón flotante de WhatsApp para móviles */
+        /* Botón flotante de WhatsApp */
         .whatsapp-float {
             position: fixed;
             width: 60px;
@@ -1060,6 +974,7 @@
             justify-content: center;
             text-decoration: none;
             transition: all 0.3s ease;
+            touch-action: manipulation; /* Mejora respuesta táctil */
         }
         
         .whatsapp-float:hover {
@@ -1074,278 +989,309 @@
                 font-size: 35px;
             }
         }
+        
+        /* Contador de imágenes */
+        #contador-imagenes {
+            text-align: center;
+            margin-top: 10px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+        }
+        
+        /* Mejoras de scroll táctil */
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Fix para evitar que elementos bloqueen el scroll */
+        .swiper-container * {
+            touch-action: pan-y pinch-zoom;
+        }
+        
+        /* Estilo para indicar que es scrollable */
+        @media (max-width: 768px) {
+            body::after {
+                content: '';
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 5px;
+                background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+                pointer-events: none;
+                z-index: 1001;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
-            <div class="container hero-content">
-                <div class="hero-title">
-                    <div class="main-title">CARLOS MACHUCA <span style="color: var(--accent);">(MACHU)</span></div>
-                    <div class="main-subtitle">PRODUCTOR VISUAL</div>
-                </div>
-                <h1>Elevando el Estándar Visual de tu Evento</h1>
-                <p>Fotografía y Filmmaking Internacional. Especialista en Bachata, Kizomba y Salsa. Cobertura de alto impacto con entrega inmediata para que tu evento sea tendencia mientras está sucediendo.</p>
-                <a href="#contacto" class="btn">Solicitar Presupuesto y Disponibilidad</a>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container hero-content">
+            <div class="hero-title">
+                <div class="main-title">CARLOS MACHUCA <span style="color: var(--accent);">(MACHU)</span></div>
+                <div class="main-subtitle">PRODUCTOR VISUAL</div>
             </div>
-        </section>
-
-        <!-- Contador Destacado -->
-        <div class="counter-section container">
-            <h3>EXPERIENCIA COMPROBADA</h3>
-            <div class="counter-number">+200</div>
-            <div class="counter-text">EVENTOS DESDE 2015</div>
+            <h1>Elevando el Estándar Visual de tu Evento</h1>
+            <p>Fotografía y Filmmaking Internacional. Especialista en Bachata, Kizomba y Salsa. Cobertura de alto impacto con entrega inmediata para que tu evento sea tendencia mientras está sucediendo.</p>
+            <a href="#contacto" class="btn">Solicitar Presupuesto y Disponibilidad</a>
         </div>
+    </section>
 
-        <!-- Generación de Hype -->
-        <section id="hype" class="hype-section">
-            <div class="container">
-                <h2>Marketing de Anticipación y Contenido Orgánico</h2>
-                <div class="section-content">
-                    <div class="text-content">
-                        <h3>Tu Mayor Diferencial</h3>
-                        <p>No solo cubro el evento; ayudo a venderlo. Trabajo desde que aterrizo, acompañando la llegada de los artistas, capturando momentos exclusivos en comidas y realizando producciones "Lifestyle" en sitios icónicos de la ciudad.</p>
-                        <p>Genero contenido que humaniza a las estrellas y crea un deseo irresistible en el público antes de que suene la primera canción. Esta estrategia de anticipación maximiza el impacto y la expectativa alrededor de tu evento.</p>
-                    </div>
-                    <div class="image-content">
-                        <!-- Galería deslizante de imágenes -->
-                        <div class="swiper-container">
-                            <div class="swiper-wrapper">
-                                <!-- Las imágenes se cargarán automáticamente desde la carpeta /images/ -->
-                            </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
+    <!-- Contador Destacado -->
+    <div class="counter-section container">
+        <h3>EXPERIENCIA COMPROBADA</h3>
+        <div class="counter-number">+200</div>
+        <div class="counter-text">EVENTOS DESDE 2015</div>
+    </div>
+
+    <!-- Generación de Hype -->
+    <section id="hype" class="hype-section">
+        <div class="container">
+            <h2>Marketing de Anticipación y Contenido Orgánico</h2>
+            <div class="section-content">
+                <div class="text-content">
+                    <h3>Tu Mayor Diferencial</h3>
+                    <p>No solo cubro el evento; ayudo a venderlo. Trabajo desde que aterrizo, acompañando la llegada de los artistas, capturando momentos exclusivos en comidas y realizando producciones "Lifestyle" en sitios icónicos de la ciudad.</p>
+                    <p>Genero contenido que humaniza a las estrellas y crea un deseo irresistible en el público antes de que suene la primera canción. Esta estrategia de anticipación maximiza el impacto y la expectativa alrededor de tu evento.</p>
+                </div>
+                <div class="image-content">
+                    <!-- Galería deslizante de imágenes -->
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <!-- Las imágenes se cargarán automáticamente desde la carpeta /images/ -->
                         </div>
-                        <p id="contador-imagenes" style="text-align: center; margin-top: 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
-                            Cargando imágenes...
-                        </p>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ROI Section -->
-        <section id="roi">
-            <div class="container">
-                <h2>Retorno de Inversión para el Organizador</h2>
-                <div class="roi-items">
-                    <div class="roi-item">
-                        <i class="fas fa-chart-line"></i>
-                        <h3>Activos para el Futuro</h3>
-                        <p>El material de alta calidad es la herramienta de venta principal para tu próxima edición. Un evento que se ve increíble en video, se agota rápido el año siguiente.</p>
-                    </div>
-                    <div class="roi-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <h3>Paz Mental</h3>
-                        <p>Garantía de satisfacción total. Gestión profesional de crisis (si un streaming falla, tengo respaldo), puntualidad y comportamiento técnico impecable.</p>
-                    </div>
-                    <div class="roi-item">
-                        <i class="fas fa-sitemap"></i>
-                        <h3>Logística Simplificada</h3>
-                        <p>Un solo profesional que domina foto, video y transmisión en vivo, optimizando tus costos de viáticos y simplificando la coordinación del evento.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Experiencia Section -->
-        <section id="experiencia" class="experience-section">
-            <div class="container">
-                <h2>Experiencia para el Congresista y el Artista</h2>
-                <div class="experience-items">
-                    <div class="experience-item">
-                        <i class="fas fa-bolt"></i>
-                        <h3>Gratificación Instantánea</h3>
-                        <p>Entrega de fotos editadas en menos de 48 horas. Los asistentes pueden compartir sus fotos mientras la emoción del evento sigue viva, maximizando el alcance orgánico en redes.</p>
-                    </div>
-                    <div class="experience-item">
-                        <i class="fas fa-film"></i>
-                        <h3>Proyección en Escenario</h3>
-                        <p>Transmisión en vivo y proyección en pantallas que elevan la experiencia sensorial del público en el salón, creando momentos memorables y compartibles.</p>
-                    </div>
-                    <div class="experience-item">
-                        <i class="fas fa-star"></i>
-                        <h3>Trato Preferencial a Artistas</h3>
-                        <p>Creación de Demos y Recaps específicos que los artistas aman compartir, multiplicando el alcance de tu marca en las redes de los influencers del género.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección Artistas y Competencias -->
-        <section id="artistas" class="artistas-section">
-            <div class="container">
-                <h2>Experiencia y Trayectoria Internacional</h2>
-                <div class="text-content" style="text-align: center; margin-bottom: 30px;">
-                    <h3>Fotógrafo principal de decenas de eventos y competencias con artistas internacionales</h3>
-                    <p>Argentina • Brasil • Paraguay • Chile • España • México</p>
-                </div>
-                
-                <h3 style="text-align: center; margin-top: 30px; margin-bottom: 20px;">Artistas Internacionales</h3>
-                <div class="artistas-grid">
-                    <div class="artista-item">Daniel y Desirée</div>
-                    <div class="artista-item">Korke y Judith</div>
-                    <div class="artista-item">Ronald y Alba</div>
-                    <div class="artista-item">Marco y Sara</div>
-                    <div class="artista-item">Ataca y La Alemana</div>
-                    <div class="artista-item">Abdel y Lety</div>
-                    <div class="artista-item">Kike y Nahir</div>
-                    <div class="artista-item">Gero y Migle</div>
-                    <div class="artista-item">Anthony y Belen</div>
-                    <div class="artista-item">Sergio y Marichu</div>
-                </div>
-                
-                <h3 style="text-align: center; margin-top: 40px; margin-bottom: 20px;">Competencias Internacionales</h3>
-                <div class="artistas-grid">
-                    <div class="competencia-item">
-                        EUROSON
-                        <div class="lugar">Competencia Internacional</div>
-                    </div>
-                    <div class="competencia-item">
-                        OAXACA
-                        <div class="lugar">México</div>
-                    </div>
-                    <div class="competencia-item">
-                        Mundial Latin Congress
-                        <div class="lugar">Competencia Mundial</div>
-                    </div>
-                    <div class="competencia-item">
-                        SBK Congress
-                        <div class="lugar">Evento Internacional</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección Video -->
-        <section id="video" class="video-section">
-            <div class="container">
-                <h2>Muestra de mi trabajo en video</h2>
-                <h3>Sara Panero - Demo Reel</h3>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/fmg2megi4N0" title="Muestra de trabajo - Carlos Machuca" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <a href="https://www.youtube.com/watch?v=fmg2megi4N0" target="_blank" class="btn btn-instagram" style="margin-top: 30px;">
-                    <i class="fab fa-youtube"></i> Ver en YouTube
-                </a>
-            </div>
-        </section>
-
-        <!-- Sección Instagram Demos Virales -->
-        <section id="reels" class="reels-section">
-            <div class="container">
-                <h2>Demos Virales en Instagram</h2>
-                <h3>Trabajos con más de medio millón de reproducciones</h3>
-                
-                <div class="reels-container">
-                    <div class="reel-card">
-                        <div class="reel-info">
-                            <div class="reel-stats">
-                                <i class="fas fa-fire"></i>
-                                <span>+500K Reproducciones</span>
-                            </div>
-                            <h4>Demo Viral de Ataca y la Alemana</h4>
-                            <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Más de medio millón de reproducciones en Instagram</p>
-                            <a href="https://www.instagram.com/p/C1HqllHLF9Z/" target="_blank" class="btn btn-instagram">
-                                <i class="fab fa-instagram"></i> Ver Demo Viral
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="reel-card">
-                        <div class="reel-info">
-                            <div class="reel-stats">
-                                <i class="fas fa-trophy"></i>
-                                <span>Competencia Internacional</span>
-                            </div>
-                            <h4>Resumen EUROSON - Competencia Internacional</h4>
-                            <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Cobertura completa del evento internacional</p>
-                            <a href="https://www.instagram.com/p/DQAS3Ovjqj3/" target="_blank" class="btn btn-instagram">
-                                <i class="fab fa-instagram"></i> Ver Resumen
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="reel-card">
-                        <div class="reel-info">
-                            <div class="reel-stats">
-                                <i class="fas fa-star"></i>
-                                <span>Demo España</span>
-                            </div>
-                            <h4>Demo Viral de Cristian y Gabriela</h4>
-                            <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Bachata España - Demo destacado</p>
-                            <a href="https://www.instagram.com/p/DOqmag6iA7W/" target="_blank" class="btn btn-instagram">
-                                <i class="fab fa-instagram"></i> Ver Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contacto Section -->
-        <section id="contacto" class="contact-section">
-            <div class="container contact-container">
-                <h2>Contacto</h2>
-                <div class="contact-info">
-                    <h3>¿Listo para elevar tu próximo evento?</h3>
-                    <p>Contáctame para discutir los detalles de tu evento y recibir un presupuesto personalizado.</p>
-                    
-                    <div class="instagram-highlight">
-                        <a href="https://www.instagram.com/carlosmachucafotografia/" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <span>@carlosmachucafotografia</span>
-                        </a>
-                        <p style="margin-top: 15px; font-size: 1rem;">Sígueme para ver mis demos virales y trabajo más reciente</p>
-                    </div>
-                    
-                    <a href="https://wa.me/5491167137742?text=Hola%20Carlos,%20estoy%20interesado%20en%20tu%20servicio%20de%20fotografía%20para%20un%20evento" target="_blank" class="btn btn-whatsapp">
-                        <i class="fab fa-whatsapp"></i> Solicitar Presupuesto y Disponibilidad de Fechas
-                    </a>
-                    
-                    <p style="margin-top: 30px; font-size: 1rem; background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
-                        <i class="fas fa-plane" style="color: var(--accent); margin-right: 10px;"></i>
-                        Disponibilidad para viajes internacionales (Pasaporte vigente). Se requiere cobertura de traslados, alojamiento y honorarios profesionales.
+                    <p id="contador-imagenes" style="text-align: center; margin-top: 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                        Cargando imágenes...
                     </p>
                 </div>
-                
-                <div class="qr-container">
-                    <div class="qr-code">
-                        <!-- Código QR real -->
-                        <img src="carlosmachucafotografia_qr.png" alt="Código QR para Instagram">
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section id="roi">
+        <div class="container">
+            <h2>Retorno de Inversión para el Organizador</h2>
+            <div class="roi-items">
+                <div class="roi-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Activos para el Futuro</h3>
+                    <p>El material de alta calidad es la herramienta de venta principal para tu próxima edición. Un evento que se ve increíble en video, se agota rápido el año siguiente.</p>
+                </div>
+                <div class="roi-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Paz Mental</h3>
+                    <p>Garantía de satisfacción total. Gestión profesional de crisis (si un streaming falla, tengo respaldo), puntualidad y comportamiento técnico impecable.</p>
+                </div>
+                <div class="roi-item">
+                    <i class="fas fa-sitemap"></i>
+                    <h3>Logística Simplificada</h3>
+                    <p>Un solo profesional que domina foto, video y transmisión en vivo, optimizando tus costos de viáticos y simplificando la coordinación del evento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiencia Section -->
+    <section id="experiencia" class="experience-section">
+        <div class="container">
+            <h2>Experiencia para el Congresista y el Artista</h2>
+            <div class="experience-items">
+                <div class="experience-item">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Gratificación Instantánea</h3>
+                    <p>Entrega de fotos editadas en menos de 48 horas. Los asistentes pueden compartir sus fotos mientras la emoción del evento sigue viva, maximizando el alcance orgánico en redes.</p>
+                </div>
+                <div class="experience-item">
+                    <i class="fas fa-film"></i>
+                    <h3>Proyección en Escenario</h3>
+                    <p>Transmisión en vivo y proyección en pantallas que elevan la experiencia sensorial del público en el salón, creando momentos memorables y compartibles.</p>
+                </div>
+                <div class="experience-item">
+                    <i class="fas fa-star"></i>
+                    <h3>Trato Preferencial a Artistas</h3>
+                    <p>Creación de Demos y Recaps específicos que los artistas aman compartir, multiplicando el alcance de tu marca en las redes de los influencers del género.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Artistas y Competencias -->
+    <section id="artistas" class="artistas-section">
+        <div class="container">
+            <h2>Experiencia y Trayectoria Internacional</h2>
+            <div class="text-content" style="text-align: center; margin-bottom: 30px;">
+                <h3>Fotógrafo principal de decenas de eventos y competencias con artistas internacionales</h3>
+                <p>Argentina • Brasil • Paraguay • Chile • España • México</p>
+            </div>
+            
+            <h3 style="text-align: center; margin-top: 30px; margin-bottom: 20px;">Artistas Internacionales</h3>
+            <div class="artistas-grid">
+                <div class="artista-item">Daniel y Desirée</div>
+                <div class="artista-item">Korke y Judith</div>
+                <div class="artista-item">Ronald y Alba</div>
+                <div class="artista-item">Marco y Sara</div>
+                <div class="artista-item">Ataca y La Alemana</div>
+                <div class="artista-item">Abdel y Lety</div>
+                <div class="artista-item">Kike y Nahir</div>
+                <div class="artista-item">Gero y Migle</div>
+                <div class="artista-item">Anthony y Belen</div>
+                <div class="artista-item">Sergio y Marichu</div>
+            </div>
+            
+            <h3 style="text-align: center; margin-top: 40px; margin-bottom: 20px;">Competencias Internacionales</h3>
+            <div class="artistas-grid">
+                <div class="competencia-item">
+                    EUROSON
+                    <div class="lugar">Competencia Internacional</div>
+                </div>
+                <div class="competencia-item">
+                    OAXACA
+                    <div class="lugar">México</div>
+                </div>
+                <div class="competencia-item">
+                    Mundial Latin Congress
+                    <div class="lugar">Competencia Mundial</div>
+                </div>
+                <div class="competencia-item">
+                    SBK Congress
+                    <div class="lugar">Evento Internacional</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Video -->
+    <section id="video" class="video-section">
+        <div class="container">
+            <h2>Muestra de mi trabajo en video</h2>
+            <h3>Sara Panero - Demo Reel</h3>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/fmg2megi4N0" title="Muestra de trabajo - Carlos Machuca" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <a href="https://www.youtube.com/watch?v=fmg2megi4N0" target="_blank" class="btn btn-instagram" style="margin-top: 30px;">
+                <i class="fab fa-youtube"></i> Ver en YouTube
+            </a>
+        </div>
+    </section>
+
+    <!-- Sección Instagram Demos Virales -->
+    <section id="reels" class="reels-section">
+        <div class="container">
+            <h2>Demos Virales en Instagram</h2>
+            <h3>Trabajos con más de medio millón de reproducciones</h3>
+            
+            <div class="reels-container">
+                <div class="reel-card">
+                    <div class="reel-info">
+                        <div class="reel-stats">
+                            <i class="fas fa-fire"></i>
+                            <span>+500K Reproducciones</span>
+                        </div>
+                        <h4>Demo Viral de Ataca y la Alemana</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Más de medio millón de reproducciones en Instagram</p>
+                        <a href="https://www.instagram.com/p/C1HqllHLF9Z/" target="_blank" class="btn btn-instagram">
+                            <i class="fab fa-instagram"></i> Ver Demo Viral
+                        </a>
                     </div>
-                    <p>Escanea para ver el portafolio en tiempo real</p>
-                    <span>@CarlosMachucaFotografia</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer simplificado -->
-        <footer>
-            <div class="footer-content">
-                <h3>Carlos Machuca (Machu) - Productor Visual</h3>
-                <p>Fotografía y Filmmaking de Alto Impacto para Eventos Internacionales</p>
-                
-                <div class="footer-links">
-                    <a href="https://www.instagram.com/carlosmachucafotografia/" target="_blank">Instagram</a>
-                    <a href="https://wa.me/5491167137742" target="_blank">WhatsApp</a>
                 </div>
                 
-                <div class="copyright">
-                    <p>&copy; 2023 Carlos Machuca Fotografía. Todos los derechos reservados.</p>
-                    <p>Especialista en Bachata, Kizomba y Salsa | +54 9 11 6713-7742</p>
-                    <p>Argentina • Brasil • Paraguay • Chile • España • México • Internacional</p>
+                <div class="reel-card">
+                    <div class="reel-info">
+                        <div class="reel-stats">
+                            <i class="fas fa-trophy"></i>
+                            <span>Competencia Internacional</span>
+                        </div>
+                        <h4>Resumen EUROSON - Competencia Internacional</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Cobertura completa del evento internacional</p>
+                        <a href="https://www.instagram.com/p/DQAS3Ovjqj3/" target="_blank" class="btn btn-instagram">
+                            <i class="fab fa-instagram"></i> Ver Resumen
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reel-card">
+                    <div class="reel-info">
+                        <div class="reel-stats">
+                            <i class="fas fa-star"></i>
+                            <span>Demo España</span>
+                        </div>
+                        <h4>Demo Viral de Cristian y Gabriela</h4>
+                        <p style="font-size: 0.95rem; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Bachata España - Demo destacado</p>
+                        <a href="https://www.instagram.com/p/DOqmag6iA7W/" target="_blank" class="btn btn-instagram">
+                            <i class="fab fa-instagram"></i> Ver Demo
+                        </a>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </div>
+    </section>
 
-        <!-- Botón flotante de WhatsApp -->
-        <a href="https://wa.me/5491167137742?text=Hola%20Carlos,%20estoy%20interesado%20en%20tu%20servicio%20de%20fotografía%20para%20un%20evento" target="_blank" class="whatsapp-float">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-    </div>
+    <!-- Contacto Section -->
+    <section id="contacto" class="contact-section">
+        <div class="container contact-container">
+            <h2>Contacto</h2>
+            <div class="contact-info">
+                <h3>¿Listo para elevar tu próximo evento?</h3>
+                <p>Contáctame para discutir los detalles de tu evento y recibir un presupuesto personalizado.</p>
+                
+                <div class="instagram-highlight">
+                    <a href="https://www.instagram.com/carlosmachucafotografia/" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                        <span>@carlosmachucafotografia</span>
+                    </a>
+                    <p style="margin-top: 15px; font-size: 1rem;">Sígueme para ver mis demos virales y trabajo más reciente</p>
+                </div>
+                
+                <a href="https://wa.me/5491167137742?text=Hola%20Carlos,%20estoy%20interesado%20en%20tu%20servicio%20de%20fotografía%20para%20un%20evento" target="_blank" class="btn btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Solicitar Presupuesto y Disponibilidad de Fechas
+                </a>
+                
+                <p style="margin-top: 30px; font-size: 1rem; background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <i class="fas fa-plane" style="color: var(--accent); margin-right: 10px;"></i>
+                    Disponibilidad para viajes internacionales (Pasaporte vigente). Se requiere cobertura de traslados, alojamiento y honorarios profesionales.
+                </p>
+            </div>
+            
+            <div class="qr-container">
+                <div class="qr-code">
+                    <!-- Código QR real -->
+                    <img src="carlosmachucafotografia_qr.png" alt="Código QR para Instagram">
+                </div>
+                <p>Escanea para ver el portafolio en tiempo real</p>
+                <span>@CarlosMachucaFotografia</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer simplificado -->
+    <footer>
+        <div class="footer-content">
+            <h3>Carlos Machuca (Machu) - Productor Visual</h3>
+            <p>Fotografía y Filmmaking de Alto Impacto para Eventos Internacionales</p>
+            
+            <div class="footer-links">
+                <a href="https://www.instagram.com/carlosmachucafotografia/" target="_blank">Instagram</a>
+                <a href="https://wa.me/5491167137742" target="_blank">WhatsApp</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Carlos Machuca Fotografía. Todos los derechos reservados.</p>
+                <p>Especialista en Bachata, Kizomba y Salsa | +54 9 11 6713-7742</p>
+                <p>Argentina • Brasil • Paraguay • Chile • España • México • Internacional</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/5491167137742?text=Hola%20Carlos,%20estoy%20interesado%20en%20tu%20servicio%20de%20fotografía%20para%20un%20evento" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
@@ -1370,16 +1316,11 @@
             fadeEffect: {
                 crossFade: true
             },
-            breakpoints: {
-                320: {
-                    slidesPerView: 1,
-                    spaceBetween: 10
-                },
-                768: {
-                    slidesPerView: 1,
-                    spaceBetween: 20
-                }
-            }
+            allowTouchMove: true, // Permite movimiento táctil
+            touchRatio: 1, // Sensibilidad táctil normal
+            touchAngle: 45, // Ángulo para detectar deslizamiento
+            grabCursor: true, // Cambia el cursor a mano
+            preventInteractionOnTransition: false, // Permite interacción durante transiciones
         });
 
         // Función para cargar imágenes automáticamente desde la carpeta /images/
@@ -1392,68 +1333,46 @@
             
             let i = 2; // Empezamos desde 2.jpg porque 1.jpg es el fondo del hero
             let imagenesCargadas = 0;
-            const maxIntentos = 1000; // Límite alto para buscar imágenes
+            const maxIntentos = 1000;
             
             // Mostrar mensaje de carga
             if (contadorElement) {
                 contadorElement.textContent = 'Buscando imágenes...';
             }
             
-            // Array para almacenar promesas de carga
-            const promesasCarga = [];
-            
-            while (i <= maxIntentos) {
-                const imgIndex = i;
-                const promesa = new Promise(async (resolve) => {
+            // Función para verificar si una imagen existe
+            async function verificarImagen(url) {
+                return new Promise((resolve) => {
                     const img = new Image();
-                    const nombreArchivo = `images/${imgIndex}.jpg`;
-                    
-                    // Crear una promesa para verificar si la imagen existe
-                    const imagenExiste = await new Promise((resolveExiste) => {
-                        img.onload = () => {
-                            console.log(`Imagen encontrada: ${nombreArchivo}`);
-                            resolveExiste(true);
-                        };
-                        img.onerror = () => {
-                            resolveExiste(false);
-                        };
-                        img.src = nombreArchivo;
-                        
-                        // Timeout para evitar esperas eternas
-                        setTimeout(() => resolveExiste(false), 200);
-                    });
-                    
-                    if (imagenExiste) {
-                        const slide = document.createElement('div');
-                        slide.className = 'swiper-slide';
-                        slide.innerHTML = `<img src="${nombreArchivo}" alt="Carlos Machuca - Trabajo ${imgIndex}" loading="lazy">`;
-                        swiperWrapper.appendChild(slide);
-                        imagenesCargadas++;
-                        
-                        // Actualizar contador en tiempo real
-                        if (contadorElement) {
-                            contadorElement.textContent = `${imagenesCargadas} imágenes cargadas`;
-                        }
-                        resolve(true);
-                    } else {
-                        // Si no encuentra la imagen, detener
-                        resolve(false);
-                    }
+                    img.onload = () => resolve(true);
+                    img.onerror = () => resolve(false);
+                    img.src = url;
+                    // Timeout más corto para mejor performance
+                    setTimeout(() => resolve(false), 100);
                 });
-                
-                promesasCarga.push(promesa);
-                const resultado = await promesa;
-                
-                if (!resultado) {
-                    // Si la imagen no existe, salir del bucle
-                    break;
-                }
-                
-                i++;
             }
             
-            // Esperar a que se completen todas las promesas
-            await Promise.all(promesasCarga);
+            while (i <= maxIntentos) {
+                const nombreArchivo = `images/${i}.jpg`;
+                const imagenExiste = await verificarImagen(nombreArchivo);
+                
+                if (imagenExiste) {
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide';
+                    slide.innerHTML = `<img src="${nombreArchivo}" alt="Carlos Machuca - Trabajo ${i}" loading="lazy">`;
+                    swiperWrapper.appendChild(slide);
+                    imagenesCargadas++;
+                    
+                    // Actualizar contador en tiempo real
+                    if (contadorElement) {
+                        contadorElement.textContent = `${imagenesCargadas} imágenes cargadas`;
+                    }
+                    i++;
+                } else {
+                    // Si no encuentra la imagen, detener
+                    break;
+                }
+            }
             
             // Actualizar Swiper después de cargar todas las imágenes
             if (imagenesCargadas > 0) {
@@ -1510,31 +1429,22 @@
             });
         });
         
-        // Activar la primera sección al cargar
-        window.addEventListener('load', function() {
-            const heroSection = document.getElementById('hero');
-            heroSection.style.opacity = '1';
-            heroSection.style.transform = 'translateY(0)';
-            
-            // Cargar imágenes automáticamente
-            cargarImagenesAutomaticamente();
-            
+        // Cargar todo cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', function() {
             // Inicializar contador animado
             const counterNumber = document.querySelector('.counter-number');
             if (counterNumber) {
                 animateCounter(counterNumber, 200, 1500);
             }
             
-            // Prevenir zoom en iOS
-            document.addEventListener('touchmove', function (event) {
-                if (event.scale !== 1) { event.preventDefault(); }
-            }, { passive: false });
+            // Cargar imágenes automáticamente
+            cargarImagenesAutomaticamente();
         });
 
         // Animación del contador
         function animateCounter(element, target, duration) {
             let start = 0;
-            const increment = target / (duration / 16); // 60fps
+            const increment = target / (duration / 16);
             const timer = setInterval(() => {
                 start += increment;
                 if (start >= target) {
@@ -1546,31 +1456,32 @@
             }, 16);
         }
         
-        // Detectar si es móvil y ajustar
-        function detectarMovil() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
+        // Fix para scroll en iOS
+        document.addEventListener('touchstart', function(e) {
+            // Permitir que todos los toques pasen
+        }, { passive: true });
         
-        if (detectarMovil()) {
-            document.body.classList.add('es-movil');
-        }
+        document.addEventListener('touchmove', function(e) {
+            // Permitir scroll normal
+        }, { passive: true });
         
-        // Prevenir scroll horizontal
-        window.addEventListener('scroll', function() {
-            if (window.scrollX !== 0) {
-                window.scrollTo(0, window.scrollY);
-            }
+        // Prevenir comportamientos no deseados en elementos interactivos
+        document.querySelectorAll('a, button, .btn').forEach(element => {
+            element.addEventListener('touchstart', function(e) {
+                // Solo prevenir el comportamiento por defecto en elementos interactivos
+                // pero no en el resto de la página
+            }, { passive: true });
         });
         
-        // Fix para iOS Safari 100vh
-        function ajustarAlturaVH() {
+        // Fix para altura en iOS Safari
+        function setVH() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
         }
         
-        ajustarAlturaVH();
-        window.addEventListener('resize', ajustarAlturaVH);
-        window.addEventListener('orientationchange', ajustarAlturaVH);
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', setVH);
     </script>
 </body>
 </html>
