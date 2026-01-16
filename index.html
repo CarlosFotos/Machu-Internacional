@@ -1345,20 +1345,27 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // Variable global para almacenar el número de imágenes
-        let imagenesCargadas = 0;
+        // LISTA DEFINIDA DE IMÁGENES - ESTO ES LO CORRECTO
+        // Agrega aquí los números de todas las imágenes que tienes en la carpeta /images/
+        // Ejemplo: Si tienes 2.jpg, 3.jpg, 4.jpg, 5.jpg, 6.jpg, 7.jpg, 8.jpg, 9.jpg, 10.jpg
+        // Entonces la lista sería: [2, 3, 4, 5, 6, 7, 8, 9, 10]
+        const IMAGENES_GALERIA = [
+            2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+            // Agrega más números aquí si tienes más imágenes
+            // Por ejemplo: 20, 21, 22, etc.
+        ];
         
-        // Inicializar Swiper para la galería de imágenes - CON AUTOPLAY MÁS RÁPIDO (1 SEGUNDO)
+        // Inicializar Swiper para la galería de imágenes
         const swiper = new Swiper('.swiper-container', {
             loop: true,
             speed: 800,
             autoplay: {
-                delay: 1000, // CAMBIADO A 1 SEGUNDO (1000ms)
+                delay: 1000, // Cambia cada 1 segundo
                 disableOnInteraction: false,
             },
             pagination: {
                 el: '.swiper-pagination',
-                clickable: false, // Deshabilitado
+                clickable: false, // Deshabilitado - no muestra los círculos
             },
             navigation: {
                 nextEl: '.swiper-button-next',
@@ -1375,124 +1382,123 @@
             preventInteractionOnTransition: false,
         });
 
-        // Función OPTIMIZADA para cargar imágenes automáticamente - MÁS RÁPIDA
-        async function cargarImagenesAutomaticamente() {
+        // Función SIMPLE y CONFIABLE para cargar imágenes
+        function cargarImagenes() {
             const swiperWrapper = document.querySelector('.swiper-wrapper');
             const contadorElement = document.getElementById('contador-imagenes');
             
-            // Limpiar el cargador inicial
+            // Limpiar contenido previo
             swiperWrapper.innerHTML = '';
             
-            // Resetear el contador
-            imagenesCargadas = 0;
-            
-            // Mostrar mensaje de carga inicial
+            // Mostrar mensaje inicial
             if (contadorElement) {
                 contadorElement.textContent = 'Cargando imágenes...';
                 contadorElement.style.color = 'rgba(255,255,255,0.8)';
             }
             
-            // Array de promesas para verificar todas las imágenes simultáneamente
-            const promesasVerificacion = [];
-            const maxImagenes = 50; // Verificar hasta 50 imágenes
-            
-            for (let i = 2; i <= maxImagenes; i++) {
-                promesasVerificacion.push(verificarImagen(i));
+            // Verificar si hay imágenes definidas
+            if (!IMAGENES_GALERIA || IMAGENES_GALERIA.length === 0) {
+                mostrarMensajeError('No hay imágenes definidas. Actualiza la lista IMAGENES_GALERIA.');
+                return;
             }
             
-            // Esperar a que todas las verificaciones terminen
-            const resultados = await Promise.all(promesasVerificacion);
+            // Contador para imágenes cargadas exitosamente
+            let imagenesCargadas = 0;
+            let imagenesFallidas = 0;
             
-            // Filtrar solo las imágenes que existen
-            const imagenesExistentes = resultados.filter(resultado => resultado.existe);
+            // Crear un array para pre-cargar imágenes
+            const imagenesPrecargadas = [];
             
-            // Si encontramos imágenes, agregarlas al swiper
-            if (imagenesExistentes.length > 0) {
-                // Ordenar por número
-                imagenesExistentes.sort((a, b) => a.numero - b.numero);
+            // Precargar imágenes
+            IMAGENES_GALERIA.forEach((numeroImagen) => {
+                const img = new Image();
+                const src = `images/${numeroImagen}.jpg`;
                 
-                // Agregar al swiper
-                imagenesExistentes.forEach((imagen) => {
+                img.onload = function() {
+                    // Imagen cargada exitosamente
+                    imagenesCargadas++;
+                    
+                    // Crear slide para esta imagen
                     const slide = document.createElement('div');
                     slide.className = 'swiper-slide';
-                    slide.innerHTML = `<img src="${imagen.url}" alt="Carlos Machuca - Trabajo ${imagen.numero}" loading="lazy">`;
+                    slide.innerHTML = `<img src="${src}" alt="Carlos Machuca - Trabajo ${numeroImagen}" loading="lazy">`;
                     swiperWrapper.appendChild(slide);
-                    imagenesCargadas++;
-                });
+                    
+                    // Si es la última imagen, actualizar Swiper
+                    if (imagenesCargadas + imagenesFallidas === IMAGENES_GALERIA.length) {
+                        finalizarCarga();
+                    }
+                };
                 
+                img.onerror = function() {
+                    // Error al cargar imagen
+                    imagenesFallidas++;
+                    console.warn(`No se pudo cargar la imagen: ${src}`);
+                    
+                    // Si es la última imagen, actualizar Swiper
+                    if (imagenesCargadas + imagenesFallidas === IMAGENES_GALERIA.length) {
+                        finalizarCarga();
+                    }
+                };
+                
+                img.src = src;
+                imagenesPrecargadas.push(img);
+            });
+            
+            // Función para finalizar la carga
+            function finalizarCarga() {
                 // Actualizar Swiper
                 swiper.update();
-                swiper.autoplay.start(); // Asegurar que el autoplay funcione
+                swiper.autoplay.start();
                 
                 // Actualizar contador
                 if (contadorElement) {
-                    contadorElement.textContent = `${imagenesCargadas} imágenes en galería`;
-                    contadorElement.style.color = 'var(--accent)';
-                    contadorElement.style.fontWeight = 'bold';
+                    if (imagenesCargadas > 0) {
+                        contadorElement.textContent = `${imagenesCargadas} imágenes en galería`;
+                        contadorElement.style.color = 'var(--accent)';
+                        contadorElement.style.fontWeight = 'bold';
+                        
+                        if (imagenesFallidas > 0) {
+                            console.warn(`${imagenesFallidas} imágenes no pudieron cargarse.`);
+                        }
+                    } else {
+                        mostrarMensajeError('No se pudieron cargar las imágenes. Verifica los nombres de archivo.');
+                    }
                 }
                 
-                console.log(`Cargadas ${imagenesCargadas} imágenes automáticamente`);
-            } else {
-                // Si no se encontraron imágenes, mostrar un mensaje
-                swiperWrapper.innerHTML = `
-                    <div class="swiper-slide" style="display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-                        <div style="text-align: center; padding: 20px;">
-                            <i class="fas fa-images" style="font-size: 3rem; margin-bottom: 15px; color: var(--accent);"></i>
-                            <p>Sube tus imágenes en la carpeta /images/</p>
-                            <p style="font-size: 0.9rem; margin-top: 10px;">Nombres: 2.jpg, 3.jpg, 4.jpg, etc.</p>
-                        </div>
-                    </div>
-                `;
-                swiper.update();
-                
-                if (contadorElement) {
-                    contadorElement.innerHTML = `
-                        No se encontraron imágenes. Sube imágenes en la carpeta /images/ con nombres 2.jpg, 3.jpg, etc.
-                    `;
-                    contadorElement.style.color = '#ff6b6b';
-                }
+                console.log(`Cargadas ${imagenesCargadas} de ${IMAGENES_GALERIA.length} imágenes`);
             }
             
-            return imagenesCargadas;
+            // Si no hay imágenes después de 3 segundos, mostrar mensaje
+            setTimeout(() => {
+                if (imagenesCargadas === 0 && swiperWrapper.children.length === 0) {
+                    mostrarMensajeError('Las imágenes están tardando en cargar. Verifica tu conexión.');
+                }
+            }, 3000);
         }
         
-        // Función auxiliar para verificar una imagen individual
-        function verificarImagen(numero) {
-            return new Promise((resolve) => {
-                const nombreArchivo = `images/${numero}.jpg`;
-                const img = new Image();
-                const timestamp = new Date().getTime();
-                
-                img.onload = () => {
-                    resolve({
-                        existe: true,
-                        url: nombreArchivo + '?' + timestamp,
-                        numero: numero
-                    });
-                };
-                
-                img.onerror = () => {
-                    resolve({
-                        existe: false,
-                        url: nombreArchivo,
-                        numero: numero
-                    });
-                };
-                
-                // Forzar a no usar cache
-                img.src = nombreArchivo + '?' + timestamp;
-                
-                // Timeout más corto para mejor performance
-                setTimeout(() => {
-                    if (!img.complete) {
-                        resolve({
-                            existe: false,
-                            url: nombreArchivo,
-                            numero: numero
-                        });
-                    }
-                }, 300);
-            });
+        // Función para mostrar mensaje de error
+        function mostrarMensajeError(mensaje) {
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+            const contadorElement = document.getElementById('contador-imagenes');
+            
+            swiperWrapper.innerHTML = `
+                <div class="swiper-slide" style="display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px; color: #ff6b6b;"></i>
+                        <p>${mensaje}</p>
+                    </div>
+                </div>
+            `;
+            swiper.update();
+            
+            if (contadorElement) {
+                contadorElement.innerHTML = `
+                    <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+                    ${mensaje}
+                `;
+                contadorElement.style.color = '#ff6b6b';
+            }
         }
 
         // Smooth scrolling para navegación interna
@@ -1525,7 +1531,7 @@
             }
             
             // Cargar imágenes automáticamente
-            cargarImagenesAutomaticamente();
+            cargarImagenes();
         });
 
         // Animación del contador
